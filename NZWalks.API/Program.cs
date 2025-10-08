@@ -17,7 +17,8 @@ builder.Services.AddDbContext<NZWalksDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalks")));
 
 // Injecting the Region Repository
-builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>(); 
+builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 
 //Injetecting Automaper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
@@ -37,4 +38,5 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseDeveloperExceptionPage();
 app.Run();
