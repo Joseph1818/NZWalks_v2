@@ -30,7 +30,7 @@ namespace NZWalks.API.Controllers
 
 
 
-        //localhost:portNumber/api/Regions 
+        //localhost:portNumber/api/Regions
         [HttpGet]
         public async Task <IActionResult> GetAllRegions()
         {

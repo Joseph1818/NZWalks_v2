@@ -44,8 +44,12 @@ namespace NZWalks.API.Controllers
 
         }
 
+        // Get Walks
+        // GET: localhost:portNumber/api/Walks?filterOn=Name&filterQuery=Track
+        // Added Filtering Parameters
+
         [HttpGet]
-        public async Task<IActionResult> GetAllWalksAsync()
+        public async Task<IActionResult> GetAllWalksAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
         {
             var walksDomain = await walkRepository.GetAllAsync();
             if (walksDomain == null)
