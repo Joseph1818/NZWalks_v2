@@ -45,13 +45,14 @@ namespace NZWalks.API.Controllers
         }
 
         // Get Walks
-        // GET: localhost:portNumber/api/Walks?filterOn=Name&filterQuery=Track
+        // GET: localhost:portNumber/api/Walks?filterOn=Name&filterQuery=Track&SortBy=Name&isAscending=true&PageNumber=1&PageSize=1000
         // Added Filtering Parameters
 
         [HttpGet]
-        public async Task<IActionResult> GetAllWalksAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
+        public async Task<IActionResult> GetAllWalksAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
+            [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageSize, [FromQuery] int pageNumber )
         {
-            var walksDomain = await walkRepository.GetAllAsync();
+            var walksDomain = await walkRepository.GetAllAsync( filterOn, filterQuery, sortBy, isAscending ?? true, pageSize, pageNumber);
             if (walksDomain == null)
             {
                 return NotFound();
