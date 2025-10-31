@@ -49,19 +49,17 @@ namespace NZWalks.API.Controllers
         // Added Filtering Parameters
 
         [HttpGet]
-        public async Task<IActionResult> GetAllWalksAsync([FromQuery] string? filterOn, [FromQuery] string? filterQuery,
-            [FromQuery] string? sortBy, [FromQuery] bool? isAscending, [FromQuery] int pageSize, [FromQuery] int pageNumber )
+        public async Task<IActionResult> GetAllWalksAsync(
+            [FromQuery] string? filterOn,[FromQuery] string? filterQuery,
+            [FromQuery] string? sortBy, [FromQuery] bool? isAscending,
+            [FromQuery] int? pageNumber = 1, [FromQuery] int? pageSize = 1000)
         {
-            var walksDomain = await walkRepository.GetAllAsync( filterOn, filterQuery, sortBy, isAscending ?? true, pageSize, pageNumber);
-            if (walksDomain == null)
-            {
-                return NotFound();
-            }
+            var walksDomain = await walkRepository.GetAllAsync(filterOn,filterQuery, sortBy, isAscending ?? true);
 
-            var walksDto = mapper.Map<List<WalkDto>>(walksDomain);
-
-            return Ok(walksDto);
+            return Ok(mapper.Map<List<WalkDto>>(walksDomain));
         }
+
+
         [HttpGet]
         [Route("{id:guid}")]
         public async Task <IActionResult> GetWalkByIdAsync(Guid id)

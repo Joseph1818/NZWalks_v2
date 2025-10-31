@@ -23,14 +23,19 @@ namespace NZWalks.API.Repositories;
             return walk;
         }
 
-    public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending = true,
-                                                int pageSize = 1, int pageNumber = 1000)
-    {
+    public async Task<List<Walk>> GetAllAsync(
+        string? filterOn = null, string? filterQuery = null,
+        string? sortBy = null, bool isAscending = true,
+        int pageNumber = 1, int pageSize = 1000 ) 
+    {   
+
+        
         // Include() function is a navigation property to retrieve also information of Region and Difficluty
         var walks = dbcontext.walk.Include("Region").Include("Difficulty").AsQueryable();
 
 
         // Filtering
+
         // Fix: Check for null before dereferencing filterOn
         if (string.IsNullOrWhiteSpace(filterOn) == false && string.IsNullOrWhiteSpace(filterQuery) == false)
         {
@@ -41,8 +46,9 @@ namespace NZWalks.API.Repositories;
         }
 
         // Sorting
-        if(string.IsNullOrWhiteSpace(sortBy) == false){
-                
+        if (string.IsNullOrWhiteSpace(sortBy) == false)
+        {
+
             if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
             {
                 walks = isAscending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x => x.Name);
@@ -51,18 +57,20 @@ namespace NZWalks.API.Repositories;
             {
                 walks = isAscending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending(x => x.LengthInKm);
             }
-            
-        }   
+
+        }
 
         //Pagination
 
-            var skipResult = (pageNumber  - 1 ) * pageSize;
-            walks = walks.Skip(skipResult).Take(pageSize);  
+        var skipResult = (pageNumber - 1) * pageSize;
+        walks = walks.Skip(skipResult).Take(pageSize);
 
-            return await walks.ToListAsync();
+        return await walks.ToListAsync();
 
         //return await dbcontext.walk.Include("Region").Include("Difficulty").ToListAsync();      
     }
+
+
         
         public async Task<Walk?> GetByIdAsync(Guid id)
         {
