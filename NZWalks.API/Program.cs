@@ -15,9 +15,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Injecting the DbContext for connecting to the database
+// Injecting NzWalks DB the DbContext for connecting to the database
 builder.Services.AddDbContext<NZWalksDbContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalks")));
+
+// Injecting NzwalkAuth DB the DbContext for connecting to the Auth database
+builder.Services.AddDbContext<NZWalksAuthDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("NZwalksAuth")));
 
 // Injecting the Region Repository
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>(); 
@@ -28,7 +32,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 // Injecting jwt authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).
-    AddJwtBearer(options => options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
