@@ -10,6 +10,7 @@ using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
 
 namespace NZWalks.API.Controllers
 {
@@ -36,12 +37,17 @@ namespace NZWalks.API.Controllers
 
         //localhost:portNumber/api/Regions
         [HttpGet]
-        [Authorize]
-        [Authorize (Roles="Reader")]
+        //[Authorize (Roles="Reader")]
         public async Task <IActionResult> GetAllRegions()
-        {
+        {   
+            // start logging
+            logger.LogInformation("GetAllRegions method started");
+
             // Fetch data from database - Regions table Domain model
             var regionDomains = await regionRepository.GetAllAsync();
+
+            // Log information to the console
+            logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionDomains)}");
 
             // Map Domain to DTO
             //var regionsDto = new List<RegionDto>();

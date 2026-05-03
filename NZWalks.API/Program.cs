@@ -18,6 +18,8 @@ var logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .CreateLogger();
 
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
 builder.Services.AddControllers();
